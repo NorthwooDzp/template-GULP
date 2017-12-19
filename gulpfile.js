@@ -14,6 +14,9 @@ gulp.task('pug', function () {
         .pipe(pug({
             pretty: true
         }))
+        .on('error', function (err) {
+            console.log(err);
+        })
         .pipe(gulp.dest('./app'))
 });
 
@@ -31,6 +34,9 @@ gulp.task('img', function () {
 gulp.task('sass', function () {
     gulp.src('./scss/**/*.scss')
         .pipe(sass())
+        .on('error', function (err) {
+            console.log(err);
+        })
         .pipe(autoprefixer({browsers: ['last 15 versions'], cascade: false}))
         .pipe(gulp.dest('app/css'));
 });
@@ -39,16 +45,16 @@ gulp.task('sass', function () {
 
 gulp.task('watch', function () {
     gulp.watch('scss/*.scss', ['sass']);
-    gulp.watch('pug/*pug', ['pug']);
+    gulp.watch('pug/*.pug', ['pug']);
     gulp.watch('pug/**/*.pug').on('change', function () {
         setTimeout(function () {
             browserSync.reload();
-        }, 500)
+        }, 1000)
     });
-    gulp.watch('scss/!**/!*.scss').on('change', function () {
+    gulp.watch('scss/*.scss').on('change', function () {
         setTimeout(function () {
             browserSync.reload();
-        }, 500)
+        }, 1000)
     });
     gulp.watch('app/js/*.js').on('change', browserSync.reload);
 });
@@ -61,4 +67,4 @@ gulp.task('browser-sync', function() {
     });
 });
 
-gulp.task('default', ['watch', 'browser-sync']);
+gulp.task('default', ['pug', 'sass','watch', 'browser-sync']);
