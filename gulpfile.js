@@ -10,7 +10,7 @@ var gulp = require('gulp'),
 
 
 gulp.task('pug', function () {
-    gulp.src('./pug/*.pug')
+    return gulp.src('./pug/*.pug')
         .pipe(pug({
             pretty: true
         }))
@@ -32,7 +32,7 @@ gulp.task('img', function () {
 });
 
 gulp.task('sass', function () {
-    gulp.src('./scss/**/*.scss')
+    return gulp.src('./scss/**/*.scss')
         .pipe(sass())
         .on('error', function (err) {
             console.log(err);
