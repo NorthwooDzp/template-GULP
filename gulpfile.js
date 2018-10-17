@@ -20,6 +20,8 @@ gulp.task('pug', function () {
         .pipe(gulp.dest('./app'))
 });
 
+
+
 gulp.task('img', function () {
     return gulp.src('app/img/**/*')
         .pipe(cache(imagemin({
