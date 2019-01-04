@@ -3,6 +3,7 @@ const sass = require('gulp-sass');
 const pug = require('gulp-pug');
 const browserSync = require('browser-sync').create();
 const autoprefixer = require('gulp-autoprefixer');
+const plumber = require('gulp-plumber');
 
 const paths = {
     styles: {
@@ -21,16 +22,16 @@ const paths = {
 
 function styles() {
     return gulp.src(paths.styles.src)
-        .pipe(sass().on('error', sass.logError))
+        .pipe(plumber())
+        .pipe(sass())
         .pipe(autoprefixer())
         .pipe(gulp.dest(paths.styles.dest))
 }
 
 function layout() {
     return gulp.src(paths.layout.src)
-        .pipe(pug({pretty: true}).on('error', function (e) {
-            console.log(e);
-        }))
+        .pipe(plumber())
+        .pipe(pug({pretty: true}))
         .pipe(gulp.dest(paths.layout.dest))
 }
 
