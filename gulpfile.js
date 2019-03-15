@@ -1,6 +1,6 @@
 const gulp = require('gulp');
+const rigger = require('gulp-rigger');
 const sass = require('gulp-sass');
-const pug = require('gulp-pug');
 const browserSync = require('browser-sync').create();
 const autoprefixer = require('gulp-autoprefixer');
 const plumber = require('gulp-plumber');
@@ -11,7 +11,7 @@ const paths = {
         dest: './app/css'
     },
     layout: {
-        src: 'pug/**/*pug',
+        src: 'html/**/*.html',
         dest: 'app'
     },
     scripts: {
@@ -31,7 +31,7 @@ function styles() {
 function layout() {
     return gulp.src(paths.layout.src)
         .pipe(plumber())
-        .pipe(pug({pretty: true}))
+        .pipe(rigger())
         .pipe(gulp.dest(paths.layout.dest))
 }
 
