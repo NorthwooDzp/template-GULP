@@ -16,5 +16,8 @@
     "gulp-rigger": "^0.5.8",
     "gulp-sass": "^4.0.2",
     "node-sass": "^4.11.0"
+  },
+  "dependencies": {
+    "gulp-sourcemaps": "^2.6.5"
   }
 }

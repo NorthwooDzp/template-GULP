@@ -3,6 +3,7 @@ const rigger = require('gulp-rigger');
 const sass = require('gulp-sass');
 const browserSync = require('browser-sync').create();
 const autoprefixer = require('gulp-autoprefixer');
+const sourcemaps = require('gulp-sourcemaps');
 const plumber = require('gulp-plumber');
 
 const paths = {
@@ -23,9 +24,11 @@ const paths = {
 function styles() {
     return gulp.src(paths.styles.src)
         .pipe(plumber())
+        .pipe(sourcemaps.init())
         .pipe(sass())
         .pipe(autoprefixer())
-        .pipe(gulp.dest(paths.styles.dest))
+        .pipe(sourcemaps.write('.'))
+        .pipe(gulp.dest(paths.styles.dest));
 }
 
 function layout() {
@@ -42,24 +45,19 @@ function serve() {
 }
 
 function watch() {
-    gulp.watch(paths.styles.src, styles);
-    gulp.watch(paths.layout.src, layout);
+    gulp.watch(paths.styles.src, styleAndReload);
+    gulp.watch(paths.layout.src, layoutAndReload);
 
-    gulp.watch(paths.styles.src).on('change', () => {
-        setTimeout(() => {
-            browserSync.reload();
-        }, 500)
-    });
-
-    gulp.watch(paths.layout.src).on('change', () => {
-        setTimeout(() => {
-            browserSync.reload();
-        }, 500)
-    });
-
-    gulp.watch('./app.js/*.js').on('change', browserSync.reload);
-
+    gulp.watch(paths.scripts.dest, reload);
 }
+
+function reload(done) {
+    browserSync.reload();
+    done();
+}
+
+const styleAndReload = gulp.series(styles, reload);
+const layoutAndReload = gulp.series(layout, reload);
 
 const def = gulp.parallel(serve, styles, layout, watch);
 
